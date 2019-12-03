@@ -52,11 +52,14 @@ class Platform(object):
         obsgraph.add((self.platform_id, RDFS.comment, self.comment))
         obsgraph.add((self.platform_id, RDFS.label, self.label))
 
-    def add_sensor(self, sensor):
-        a_uri = Sensor.get_uri()
-        self.sensors.append(a_uri)
-        obsgraph.add((self.platform_id, sosa.hosts, a_uri))
-        Sensor.add_platform_id(self.platform_id)
+    def add_sensor(self, Sensor):
+        if isinstance(self, Sensor):
+            sensor_uri = Sensor.get_uri()
+            self.sensors.append(sensor_uri)
+            obsgraph.add((self.platform_id, sosa.hosts, sensor_uri))
+            Sensor.add_platform_id(self.platform_id)
+        else:
+            raise Exception('Object is not of type Sensor')
 
     def remove_sensor(self, sensor):
         a_uri = Sensor.get_uri()
@@ -64,12 +67,18 @@ class Platform(object):
         obsgraph.remove(self.platform_id, sosa.hosts, a_uri)
         Sensor.add_platform_id(self.platform_id)
 
-    # Actuator is a device used by, or implements,an (Actuation)or Procedure that changes the state of the world
-    def add_actuator(self, sensorURI, sensor):
-        a_uri = Sensor.get_uri()
-        self.actuators.append(a_uri)
-        obsgraph.add((self.platform_id, sosa.hosts, a_uri))
-        Sensor.add_platform_id(self.platform_id)
+    """
+    Actuator is a device used by, or implements,an (Actuation)or Procedure that changes the state of the world
+    """
+
+    def add_actuator(self, Actuator):
+        if isinstance(self, Actuator):
+            a_uri = Actuator.get_uri()
+            self.actuators.append(a_uri)
+            obsgraph.add((self.platform_id, sosa.hosts, a_uri))
+            Actuator.add_platform_id(self.platform_id)
+        else:
+            raise Exception('Object is not of type Actuator')
 
     def remove_actuator(self, sensorURI, sensor):
         a_uri = Sensor.get_uri()
@@ -78,11 +87,15 @@ class Platform(object):
         Sensor.add_platform_id(self.platform_id)
 
     # Sampler : A device that is used by,or implements, a (Sampling) Procedure to create or transform one or more samples
-    def add_sampler(self, sensorURI, FeatureURI, result):
-        a_uri = Sensor.get_uri()
-        self.samplers.append(a_uri)
-        obsgraph.add((self.platform_id, sosa.hosts, a_uri))
-        Sensor.add_platform_id(self.platform_id)
+
+    def add_sampler(self, Sampler):
+        if isinstance(self, Sampler):
+            sampler_uri = Sampler.get_uri()
+            self.samplers.append(sampler_uri)
+            obsgraph.add((self.platform_id, sosa.hosts, sampler_uri))
+            Sampler.add_platform_id(self.platform_id)
+        else:
+            raise Exception('Object is not of type Sampler')
 
     def remove_sampler(self, sensorURI, FeatureURI, result):
         a_uri = Sensor.get_uri()
@@ -92,7 +105,6 @@ class Platform(object):
 
 
 class Sensor(object):
-
     observations = []
 
     def __init__(self, sensor_description, observable_property, observable_property_uri, detects):

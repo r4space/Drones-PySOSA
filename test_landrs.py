@@ -1,30 +1,33 @@
-#!/usr/bin/env python
 import unittest
-
 from . import pyobs_pyobs
 import rdflib
 
 
-def test_Observation():
-    obs = pyobs_pyobs.ObservationCollection(comment="mycol")
-    this_graph = pyobs_pyobs.get_graph()
-    print(this_graph.serialize(format='turtle'))
+class MyTestCase(unittest.TestCase):
+
+    def test_add_sensor(self):
+        obs = pyobs_pyobs.Platform(comment="mycol")
+        this_graph = pyobs_pyobs.get_graph()
+        print(this_graph.serialize(format='turtle'))
+
+    def test_remove_sensor(self):
+        obs = pyobs_pyobs.ObservationCollection(comment='mycol2')
+        this_graph = pyobs_pyobs.get_graph()
+        print(this_graph.serialize(format='turtle'))
+
+    def test_Observation(self):
+        obs = pyobs_pyobs.ObservationCollection(comment="mycol")
+        this_graph = pyobs_pyobs.get_graph()
+        print(this_graph.serialize(format='turtle'))
 
 
-def test_Platform():
-    obs = pyobs_pyobs.ObservationCollection(comment='mycol2')
-    this_graph = pyobs_pyobs.get_graph()
-    print(this_graph.serialize(format='turtle'))
-
-
-def test_Sensor():
-    obs = pyobs_pyobs.ObservationCollection(comment='mycol3')
-    this_graph = pyobs_pyobs.get_graph()
-    print(this_graph.serialize(format='turtle'))
+    def test_Sensor(self):
+        obs = pyobs_pyobs.ObservationCollection(comment='mycol3')
+        this_graph = pyobs_pyobs.get_graph()
+        print(this_graph.serialize(format='turtle'))
 
 
 if __name__ == '__main__':
-    test_Platform()
+    unittest.main()
 
-#if __name__ == '__main__':
-#    unittest.main()
+
