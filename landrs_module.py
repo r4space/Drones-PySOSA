@@ -36,7 +36,7 @@ class Platform(object):
     """
     Creates a Platform object that represents a SOSA Platform
     SOSA Platform is an entity that hosts other entities,particularly Sensors, Actuators, Samplers and other Platform 
-"""
+    """
     # Maybe remove list if makes object too big/not needed, or might want a func that returns this list
     # Attributes of the platform class
 
@@ -105,6 +105,8 @@ class Platform(object):
 
 
 class Sensor(object):
+
+    """   Creates a Sensor object that represents a SOSA Feature of Interest """
     observations = []
 
     def __init__(self, sensor_description, observable_property, observable_property_uri, detects):
@@ -132,3 +134,60 @@ class Sensor(object):
         obsgraph.add((self.obscollid, ssnext.hasMember, obsid))
         obsgraph.add((obsid, sosa.resultTime, resultTimeLiteral))
         obsgraph.add((obsid, sosa.hasSimpleResult, resultLiteral))
+
+    def set_sensor_id(self, sensor_id):
+        self.sensor_id = sensor_id
+        obsgraph.add(self.sensor_id, RDF.type, sosa.sensor)
+
+
+    def set_platform_id(self, platform_id):
+        self.platform_id = platform_id
+        obsgraph.add((self.platform_id, RDF.type, sosa.platform))
+
+"""
+    def remove_platform_id(self, platform_id):
+        self.platform_id = platform_id
+        self.platform.remove(platform_id)
+        obsgraph.add((self.platform_id, RDF.type, sosa.platform))
+        #Platform.remove_platform(self.platform_id)
+"""
+
+
+
+# Class for managing observableproperties
+# Preferably linked to envo, sweet and qudt
+class ObservableProperty(object):
+    """
+    Creates a Observable Property object that represents a SOSA Observable Property
+
+    """
+
+    def __init__(self, property_uri):
+        if property_uri:
+            self.observable_property_uri = property_uri
+        else:
+            self.observable_property_uri = BNode()
+        obsgraph.add((self.observable_property_uri, RDF.type, sosa.Observable_property))
+
+    def get_uri(self):
+        return self.observable_property_uri
+
+
+class FeatureOfInterest(object):
+    """   Creates a Feature of Interest object that represents a SOSA Feature of Interest """
+
+    def __init__(self):
+        self.uri = "_B0"
+        pass
+
+
+class UltimateFeatureOfInterest(FeatureOfInterest):
+    def __init__(self):
+        super(UltimateFeatureOfInterest, self).__init__()
+
+
+
+
+
+
+
