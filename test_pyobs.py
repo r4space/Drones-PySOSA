@@ -1,4 +1,4 @@
-from . import pyobs_pyobs
+import pyobs_pyobs
 
 
 import rdflib
